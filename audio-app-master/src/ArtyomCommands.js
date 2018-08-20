@@ -33,7 +33,16 @@ class ArtyomCommandsManager {
                     Artyom.say("Hello, how are you?");
                 }
             },
-            
+            {
+              indexes: ["Number One", "number Two"],
+              action: (i) => {
+                if (i === 0) {
+                  Artyom.say("You would like the first device?")
+                } else if (i === 1) {
+                  Artyom.say("You would like the second device?")
+                }
+              }
+            },
             {
                 indexes: ["say hi"],
                 action: () => {
