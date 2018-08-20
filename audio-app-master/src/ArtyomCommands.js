@@ -1,6 +1,11 @@
 
 let spokenword;
 let finalCommand;
+let accessToken = document.URL.split('token=')[1]
+const headers = {
+  'Authorization': `Bearer ${accessToken}`,
+  'Content-Type': 'application/json'
+}
 
 class ArtyomCommandsManager {
 
@@ -70,6 +75,66 @@ class ArtyomCommandsManager {
 
                     Artyom.say("Ready ! What were you expecting? write some code you lazy bear !");
                 }
+            },
+            {
+              indexes: ["play"],
+              action: () => {
+                Artyom.say("Okay. let's get this party started")
+                fetch('https://api.spotify.com/v1/me/player/play', {
+                  method: 'PUT',
+                  headers: headers
+                })
+              }
+            },
+            {
+              indexes: ["pause track"],
+              action: () => {
+                Artyom.say("Okay. letss take a break")
+                fetch('https://api.spotify.com/v1/me/player/pause', {
+                  method: 'PUT',
+                  headers: headers
+                })
+              }
+            },
+            {
+              indexes: ["next"],
+              action: () => {
+                Artyom.say('Okay. skipping ahead')
+                fetch('https://api.spotify.com/v1/me/player/next', {
+                  method: 'POST',
+                  headers: headers
+                })
+              }
+            },
+            {
+              indexes: ["previous"],
+              action: () => {
+                Artyom.say("You're right, that one was a banger")
+                fetch('https://api.spotify.com/v1/me/player/previous', {
+                  method: 'POST',
+                  headers: headers
+                })
+              }
+            },
+            {
+              indexes: ["turn shuffle off"],
+              action: () => {
+                Artyom.say('Okay. bye bye shuffle')
+                fetch(`https://api.spotify.com/v1/me/player/shuffle?state=false`, {
+                  method: 'PUT',
+                  headers: headers
+                })
+              }
+            },
+            {
+              indexes: ["turn shuffle on"],
+              action: () => {
+                Artyom.say('Okay. shuffle time')
+                fetch(`https://api.spotify.com/v1/me/player/shuffle?state=true`, {
+                  method: 'PUT',
+                  headers: headers
+                })
+              }
             },
         ]);
     }

@@ -2,7 +2,7 @@ import React, {Component } from'react';
 // import ReactDOM from 'react-dom';
 import P5Wrapper from 'react-p5-wrapper';
 import Sketch2 from './sketch2.js'
-
+import './Home.css'
 import MicrophoneViz from './MicrophoneViz.js'
 import CreateImage from './CreateImage.js'
 
@@ -13,12 +13,20 @@ import ArtyomCommands, { ArtyomCommandsManager,
                           spokenword,
                           finalCommand
                          } from './ArtyomCommands.js';
+
+import DeviceList from './components/DeviceList'
+import NowPlaying from './components/NowPlaying'
+import SearchBar from './components/SearchBar'
+import ResultCardsContainer from './components/ResultCardsContainer'
+
 // Create a "globally" accesible instance of Artyom
 const Jarvis = new Artyom();
 
-class App extends Component {
+export default class Home extends Component {
+
 
   constructor (props, context){
+
     super(props, context);
     // Add `this` context to the handler functions
     this.startAssistant = this.startAssistant.bind(this);
@@ -32,8 +40,14 @@ class App extends Component {
         textareaValue: "",
         artyomIsReading: false,
         finalCommand: "",
-        text: 'Richard'
-    };
+        text: 'Richard',
+        accessToken: null,
+        devices: [],
+        deviceId: null,
+        currentTrack: null,
+        searchResults: [],
+        playList: null
+        };
 
     // Load some commands to Artyom using the commands manager
     let CommandsManager = new ArtyomCommandsManager(Jarvis);
@@ -57,7 +71,100 @@ class App extends Component {
 
   componentDidMount(){
     // if (this.state.finalCommand !== prevState.finalCommand) return true
-    document.querySelector("#talkButton").click()
+    document.querySelector("#talkButton").click();
+
+    let accessToken = document.URL.split("token=")[1]
+
+    this.setState({ accessToken }, () => {
+      const headers = { 'Authorization': `Bearer ${this.state.accessToken}` }
+
+      fetch('https://api.spotify.com/v1/me/player/devices', {
+        method: "GET",
+        headers: headers })
+        .then(r => r.json())
+        .then(({ devices }) => {
+          this.setState({ devices })
+        })
+        .then(() => {
+          this.trackRefresh = setInterval(() => {
+            fetch('https://api.spotify.com/v1/me/player', {
+              method: 'GET',
+              headers: headers })
+            .then(r => {
+              if(r.status === 204) {
+                return '204'
+              } else {
+                return r.json()
+              }
+            })
+            .then(json => {
+              if (json === '204'){
+                return
+              } else if ( this.state.currentTrack === null || json.item.id !== this.state.currentTrack.id ){
+                this.setState({ currentTrack: json.item })
+              }
+            })
+          }, 2000)
+        })
+    })
+
+    this.refreshPlayerStatus = setInterval(() => {
+      fetch('https://api.spotify.com/v1/me/player', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${this.state.accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(r => {
+        return (r.status === 204 ? '204' : r.json())
+      })
+      .then(json => {
+        if (json === '204'){
+          return
+        } else {
+          if (json.context === null) {
+            this.setState({ playList: null })
+          } else {
+            let listArray = json.context.href.split('/')
+            let listId = listArray[listArray.length - 1]
+
+            if(this.state.playList !== listId){
+              this.setState({ playList: listId })
+            }
+          }
+        }
+      })
+    }, 5000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.trackRefresh)
+    clearInterval(this.refreshPlayerStatus)
+  }
+
+  refreshDevices = () => {
+    fetch('https://api.spotify.com/v1/me/player/devices', {
+      method: "GET",
+      headers: { 'Authorization': `Bearer ${this.state.accessToken}` }})
+      .then(r => r.json())
+      .then(({ devices }) => {
+        this.setState({ devices })
+      })
+  }
+
+  search = (query) => {
+    const formatQuery = query.replace(' ', '%20')
+
+    fetch(`http://localhost:3000/albums/${formatQuery}`, {
+      method: 'GET',
+      headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    }).then(r => r.json())
+    .then(searchResults => this.setState({ searchResults }))
+  }
+
+  setDeviceId = (deviceId) => {
+    this.setState({ deviceId })
   }
 
   startAssistant() {
@@ -109,15 +216,16 @@ class App extends Component {
     });
   }
 
-
-
 	render () {
+    const { devices, deviceId, accessToken, playList, currentTrack, searchResults } = this.state
     // console.log(Artyom.getVoices())
-    // console.log(CreateImage.createImage())
+    // console.log(CreateImage.createImage()
 		return (
-			<div>
+			<div className="homeBody">
+
 
         <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0", width:"900px", height:"200px"}}>
+
           <P5Wrapper sketch={Sketch2} />
 
           <CreateImage msg={["hello, " + this.state.finalCommand]}/>
@@ -129,10 +237,16 @@ class App extends Component {
           <input type="button" value="Stop Artyom" disabled={!this.state.artyomActive} onClick={this.stopAssistant}/>
         </div>
 
-        {this.loadVoices("Hello. I am Jarvis.")}
+        {/* {this.loadVoices("Hello. I am Jarvis.")} */}
 
       {spokenword === null ? null : <p>{spokenword}</p>}
 
+       {/* { devices.length === 0 ? <div> Open Spotify on one of our devices to get started <br /> <button onClick={this.refreshDevices}>Refresh device list</button></div> : null }
+       { !deviceId ? <DeviceList devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} /> : null }
+       { currentTrack ? <NowPlaying track={currentTrack}/> : null}
+       <SearchBar search={this.search} />
+       { searchResults.length !== 0 ? <ResultCardsContainer searchResults={searchResults} accessToken={accessToken} playList={playList} /> : null }
+    */}
 
         <MicrophoneViz />
 
@@ -157,5 +271,3 @@ class App extends Component {
 		);
 	}
 }
-
-export default App
