@@ -5,6 +5,7 @@ import Sketch2 from './sketch2.js'
 import './Home.css'
 import MicrophoneViz from './MicrophoneViz.js'
 import CreateImage from './CreateImage.js'
+import ModalPage from './components/ModalPage.js'
 
 // Import the Artyom library
 import Artyom from 'artyom.js';
@@ -21,6 +22,7 @@ import ResultCardsContainer from './components/ResultCardsContainer'
 
 // Create a "globally" accesible instance of Artyom
 const Jarvis = new Artyom();
+Jarvis.ArtyomVoicesIdentifiers["en-GB"] = ["Google UK English Female", "Google UK English Male", "en-GB", "en_GB"];
 
 export default class Home extends Component {
 
@@ -56,14 +58,27 @@ export default class Home extends Component {
     // console.log(CommandsManager.loadCommands().spokenword)
 }
 
-  loadVoices = (msg) => {
+  // loadVoices = (msg) => {
+  //   let timer = setInterval(() => {
+  //     let voices = speechSynthesis.getVoices();
+  //     // console.log(voices);
+  //     if (voices.length !== 0) {
+  //       let message = new SpeechSynthesisUtterance(msg);
+  //       message.voice = voices[49];
+  //       speechSynthesis.speak(message);
+  //       clearInterval(timer);
+  //       }
+  //   }, 20);
+  // }
+
+  loadVoices = () => {
     let timer = setInterval(() => {
-      let voices = speechSynthesis.getVoices();
+      let voices = Jarvis.getVoices();
       // console.log(voices);
       if (voices.length !== 0) {
-        let message = new SpeechSynthesisUtterance(msg);
-        message.voice = voices[49];
-        speechSynthesis.speak(message);
+        // let message = new SpeechSynthesisUtterance(msg);
+        Jarvis.voice = voices[49];
+        // speechSynthesis.speak(message);
         clearInterval(timer);
         }
     }, 20);
@@ -83,7 +98,7 @@ export default class Home extends Component {
         headers: headers })
         .then(r => r.json())
         .then(({ devices }) => {
-          this.setState({ devices })
+          this.setState({ devices }, () => document.querySelector(".Ripple-parent").click())
         })
         .then(() => {
           this.trackRefresh = setInterval(() => {
@@ -178,12 +193,13 @@ export default class Home extends Component {
         continuous: true,
         soundex: true,
         listen: true
+
     }).then(() => {
         // Display loaded commands in the console
 
         console.log(Jarvis.getAvailableCommands());
 
-        Jarvis.say("Hello there");
+        Jarvis.say("Hello. Please select your device");
 
         // Jarvis.say("How are you")
 
@@ -228,14 +244,15 @@ export default class Home extends Component {
 
           <P5Wrapper sketch={Sketch2} />
 
-          <CreateImage msg={["hello, " + this.state.finalCommand]}/>
+          <CreateImage msg={["hello " + this.state.finalCommand]}/>
 
         </div>
 
         <div style={{position: "relative",zIndex: "99999999999"}}>
+          <ModalPage devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} />
           <div id="talkButton" onClick={this.startAssistant}/>
           <input type="button" value="Stop Artyom" disabled={!this.state.artyomActive} onClick={this.stopAssistant}/>
-        </div>
+      </div>
 
         {/* {this.loadVoices("Hello. I am Jarvis.")} */}
 

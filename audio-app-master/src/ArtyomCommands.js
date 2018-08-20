@@ -33,6 +33,7 @@ class ArtyomCommandsManager {
                     Artyom.say("Hello, how are you?");
                 }
             },
+            
             {
                 indexes: ["say hi"],
                 action: () => {
