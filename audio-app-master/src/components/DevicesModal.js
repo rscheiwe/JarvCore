@@ -17,7 +17,7 @@ class DevicesModal extends Component {
 
     return (
       <Container>
-        <Button color="secondary" onClick={this.toggle} className="devices-modal-button">Devices</Button>
+        <Button style={{opacity: 0}} onClick={this.toggle} className="devices-modal-button"></Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}></ModalHeader>
           <ModalBody>

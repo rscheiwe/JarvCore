@@ -155,7 +155,7 @@ class ArtyomCommandsManager {
             {
               indexes: ["open devices"],
               action: () => {
-                document.querySelector('.device-modal-button').click()
+                document.querySelector('.devices-modal-button').click()
               }
             },
         ]);

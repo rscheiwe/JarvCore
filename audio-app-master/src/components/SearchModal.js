@@ -17,7 +17,7 @@ export default class SearchModal extends Component {
     const { search, searchResults, accessToken, playList } = this.props
     return (
       <Container>
-        <Button color="secondary" onClick={this.toggle} className="search-modal-button">Search</Button>
+        <Button style={{opacity: 0}} onClick={this.toggle} className="search-modal-button"></Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}></ModalHeader>
           <ModalBody>
@@ -27,7 +27,7 @@ export default class SearchModal extends Component {
 
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={this.toggle}>Close</Button>{' '}
+            <Button color="secondary" onClick={this.toggle}>Close</Button>
           </ModalFooter>
         </Modal>
       </Container>
