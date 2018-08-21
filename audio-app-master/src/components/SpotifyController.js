@@ -124,6 +124,10 @@ export default class SpotifyController extends Component {
     })
   }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> mark/refactor
   setDeviceId = (deviceId) => {
     this.setState({ deviceId })
   }
