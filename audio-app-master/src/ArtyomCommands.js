@@ -147,18 +147,24 @@ class ArtyomCommandsManager {
               }
             },
             {
-              indexes: ["open search"],
-              action: () => {
-                document.querySelector('.search-modal-button').click()
-              }
-            },
-            {
               indexes: ["search *"],
               smart: true,
               action: (i, query) => {
-                document.querySelector('.search-modal-button').click()
-                document.querySelector('.search-input-field').value = query
+                let searchInput = document.querySelector('.search-input-field')
+
+                if (!searchInput) {
+                  document.querySelector('.search-modal-button').click()
+                  searchInput = document.querySelector('.search-input-field')
+                }
+
+                searchInput.value = query
                 document.querySelector('.search-form-button').click()
+              }
+            },
+            {
+              indexes: ["close search"],
+              action: () => {
+                document.querySelector('.search-modal-button').click()
               }
             },
             {
