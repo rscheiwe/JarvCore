@@ -26,9 +26,7 @@ Jarvis.ArtyomVoicesIdentifiers["en-GB"] = ["Google UK English Female", "Google U
 
 export default class Home extends Component {
 
-
   constructor (props, context){
-
     super(props, context);
     // Add `this` context to the handler functions
     this.startAssistant = this.startAssistant.bind(this);
@@ -40,15 +38,14 @@ export default class Home extends Component {
         textareaValue: "",
         artyomIsReading: false,
         finalCommand: "",
-        text: 'Richard',
-        searchResults: [],
+        text: 'Richard'
         };
 
     // Load some commands to Artyom using the commands manager
     let CommandsManager = new ArtyomCommandsManager(Jarvis);
     console.log(props)
     CommandsManager.loadCommands();
-}
+  }
 
 //   finalCommander () {
 //     // console.log("HIT")
@@ -69,16 +66,6 @@ export default class Home extends Component {
 
   componentDidMount(){
     document.querySelector("#talkButton").click();
-  }
-
-  search = (query) => {
-    const formatQuery = query.replace(' ', '%20')
-
-    fetch(`http://localhost:3000/albums/${formatQuery}`, {
-      method: 'GET',
-      headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
-    }).then(r => r.json())
-    .then(searchResults => this.setState({ searchResults }))
   }
 
   startAssistant() {
@@ -137,7 +124,7 @@ export default class Home extends Component {
 
         <div style={{position: "relative",zIndex: "99999999999"}}>
           <div id="talkButton" onClick={this.startAssistant}/>
-          <input type="button" value="Stop Artyom" disabled={!this.state.artyomActive} onClick={this.stopAssistant}/>
+          {/* <input type="button" value="Stop Artyom" disabled={!this.state.artyomActive} onClick={this.stopAssistant}/> */}
         </div>
 
         {/* {this.loadVoices("Hello. I am Jarvis.")} */}
@@ -147,8 +134,6 @@ export default class Home extends Component {
        {/* { devices.length === 0 ? <div> Open Spotify on one of our devices to get started <br /> <button onClick={this.refreshDevices}>Refresh device list</button></div> : null }
        { !deviceId ? <DeviceList devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} /> : null } */}
        {/* { currentTrack ? <NowPlaying track={currentTrack}/> : null} */}
-       {/* <SearchBar search={this.search} /> */}
-       {/* { searchResults.length !== 0 ? <ResultCardsContainer searchResults={searchResults} accessToken={accessToken} playList={playList} /> : null } */}
 
         <CreateImage msg={["hello " + this.state.finalCommand]}/>
         <MicrophoneViz />

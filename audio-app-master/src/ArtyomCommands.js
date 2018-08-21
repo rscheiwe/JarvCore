@@ -29,10 +29,10 @@ class ArtyomCommandsManager {
         // Here you can load all the commands that you want to Artyom
         return Artyom.addCommands([
             {
-                indexes: ["Hello"],
-                action: () => {
-                    Artyom.say("Hello, how are you?");
-                }
+              indexes: ["Hello"],
+              action: () => {
+                  Artyom.say("Hello, how are you?");
+              }
             },
             {
               indexes: ["Number One", "number Two"],
@@ -45,16 +45,16 @@ class ArtyomCommandsManager {
               }
             },
             {
-                indexes: ["say hi"],
-                action: () => {
-                    Artyom.say("Hi justine");
-                }
+              indexes: ["say hi"],
+              action: () => {
+                  Artyom.say("Hi justine");
+              }
             },
             {
-                indexes: ["good?"],
-                action: () => {
-                    Artyom.say("I'm great");
-                }
+              indexes: ["good?"],
+              action: () => {
+                  Artyom.say("I'm great");
+              }
             },
             {
               indexes: ["I want *", "Not *"],
@@ -69,23 +69,23 @@ class ArtyomCommandsManager {
               }
             },
             {
-                indexes: ["Yes"],
-                action: () => {
-                    Artyom.say("great! Searching" + spokenword);
-                    // this.setSomeVariable(spokenword)
-                    finalCommand = spokenword
-                }
+              indexes: ["Yes"],
+              action: () => {
+                  Artyom.say("great! Searching" + spokenword);
+                  // this.setSomeVariable(spokenword)
+                  finalCommand = spokenword
+              }
             },
             {
-                indexes: ["Generate reports of * of this year"],
-                smart: true,
-                action: (i, month) => {
-                    let year = new Date().getFullYear();
+              indexes: ["Generate reports of * of this year"],
+              smart: true,
+              action: (i, month) => {
+                  let year = new Date().getFullYear();
 
-                    Artyom.say(`Generating reports of ${month} ${year} `);
+                  Artyom.say(`Generating reports of ${month} ${year} `);
 
-                    Artyom.say("Ready ! What were you expecting? write some code you lazy bear !");
-                }
+                  Artyom.say("Ready ! What were you expecting? write some code you lazy bear !");
+              }
             },
             {
               indexes: ["play"],
@@ -145,6 +145,33 @@ class ArtyomCommandsManager {
                   method: 'PUT',
                   headers: headers
                 })
+              }
+            },
+            {
+              indexes: ["search *"],
+              smart: true,
+              action: (i, query) => {
+                let searchInput = document.querySelector('.search-input-field')
+
+                if (!searchInput) {
+                  document.querySelector('.search-modal-button').click()
+                  searchInput = document.querySelector('.search-input-field')
+                }
+
+                searchInput.value = query
+                document.querySelector('.search-form-button').click()
+              }
+            },
+            {
+              indexes: ["close search"],
+              action: () => {
+                document.querySelector('.search-modal-button').click()
+              }
+            },
+            {
+              indexes: ["open devices"],
+              action: () => {
+                document.querySelector('.devices-modal-button').click()
               }
             },
         ]);

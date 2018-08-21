@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import ModalPage from './ModalPage'
+import DevicesModal from './DevicesModal'
+import SearchModal from './SearchModal'
 
 export default class SpotifyController extends Component {
 
@@ -10,7 +11,8 @@ export default class SpotifyController extends Component {
     currentTrack: null,
     playList: null,
     tokenExpires: null,
-    refreshToken: null
+    refreshToken: null,
+    searchResults: []
   }
 
   componentDidMount() {
@@ -123,16 +125,28 @@ export default class SpotifyController extends Component {
       }
     })
   }
-  
+
+  search = (query) => {
+    const formatQuery = query.replace(' ', '%20')
+
+    fetch(`http://localhost:3000/albums/${formatQuery}`, {
+      method: 'GET',
+      headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    }).then(r => r.json())
+    .then(searchResults => this.setState({ searchResults }))
+  }
+
   setDeviceId = (deviceId) => {
     this.setState({ deviceId })
   }
 
   render() {
-    const { devices, accessToken } = this.state
+    const { devices, accessToken, searchResults, playList } = this.state
+
     return (
       <div>
-        <ModalPage devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} />
+        <DevicesModal devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} />
+        <SearchModal search={this.search} searchResults={searchResults} accessToken={accessToken} playList={playList} />
       </div>
     )
   }

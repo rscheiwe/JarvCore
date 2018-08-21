@@ -4,8 +4,9 @@ import Device from './Device'
 class DeviceList extends Component {
 
   mappedDevices = () => {
+    const { toggle, setDeviceId, accessToken } = this.props
     return this.props.devices.map(device => (
-      <Device key={device.id} device={device} setDeviceId={this.props.setDeviceId} accessToken={this.props.accessToken}/>)
+      <Device key={device.id} device={device} setDeviceId={setDeviceId} accessToken={accessToken} toggle={toggle}/>)
     )
   }
 
