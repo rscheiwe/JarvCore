@@ -10,10 +10,10 @@ import SpotifyController from './components/SpotifyController'
 // Import the Artyom library
 import Artyom from 'artyom.js';
 // Import the previously created class to handle the commands from another file
-import ArtyomCommands, { ArtyomCommandsManager,
-                          spokenword,
-                          finalCommand
-                         } from './ArtyomCommands.js';
+// import ArtyomCommands, { ArtyomCommandsManager,
+//                           spokenword,
+//                           finalCommand
+//                          } from './ArtyomCommands.js';
 
 import DeviceList from './components/DeviceList'
 import NowPlaying from './components/NowPlaying'
@@ -23,6 +23,9 @@ import ResultCardsContainer from './components/ResultCardsContainer'
 // Create a "globally" accesible instance of Artyom
 const Jarvis = new Artyom();
 Jarvis.ArtyomVoicesIdentifiers["en-GB"] = ["Google UK English Female", "Google UK English Male", "en-GB", "en_GB"];
+let finalCommand;
+let spokenword;
+
 
 export default class Home extends Component {
 
@@ -42,9 +45,9 @@ export default class Home extends Component {
         };
 
     // Load some commands to Artyom using the commands manager
-    let CommandsManager = new ArtyomCommandsManager(Jarvis);
-    console.log(props)
-    CommandsManager.loadCommands();
+    // let CommandsManager = new ArtyomCommandsManager(Jarvis);
+    // console.log(props)
+    // CommandsManager.loadCommands();
   }
 
 //   finalCommander () {
@@ -54,18 +57,68 @@ export default class Home extends Component {
 //   })()
 // }
 
-  loadVoices = () => {
-    let timer = setInterval(() => {
-      let voices = Jarvis.getVoices()
-      if (voices.length !== 0) {
-        Jarvis.voice = voices[49];
-        clearInterval(timer);
-        }
-    }, 20);
-  }
+  // loadVoices = () => {
+  //   let timer = setInterval(() => {
+  //     let voices = Jarvis.getVoices()
+  //     if (voices.length !== 0) {
+  //       Jarvis.voice = voices[49];
+  //       clearInterval(timer);
+  //       }
+  //   }, 20);
+  // }
 
   componentDidMount(){
     document.querySelector("#talkButton").click();
+
+    Jarvis.addCommands([
+    {
+      indexes: ["Hello"],
+      action: () => {
+          Jarvis.say("Hello, how are you?");
+      }
+    },
+    {
+      indexes: ["I want *", "Not *"],
+      smart: true,
+      action: (i, wildcard) => {
+        if (i === 0) {
+          Jarvis.say("You want" + wildcard)
+          spokenword = wildcard
+        } else if (i === 1) {
+          Jarvis.say("Ok, sorry. Please tell me again")
+        }
+      }
+    },
+    {
+      indexes: ["Yes"],
+      action: () => {
+        Jarvis.say("great! Searching" + spokenword);
+        // this.setSomeVariable(spokenword)
+        this.setState({finalCommand: spokenword})
+      }
+    },
+    {
+      indexes: ["search *"],
+      smart: true,
+      action: (i, query) => {
+        let searchInput = document.querySelector('.search-input-field')
+
+        if (!searchInput) {
+          document.querySelector('.search-modal-button').click()
+          searchInput = document.querySelector('.search-input-field')
+        }
+
+        searchInput.value = query
+        document.querySelector('.search-form-button').click()
+      }
+    },
+    {
+      indexes: ["close search"],
+      action: () => {
+        document.querySelector('.search-modal-button').click()
+      }
+    },
+  ]);
   }
 
   startAssistant() {
