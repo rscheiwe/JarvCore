@@ -27,7 +27,7 @@ class ModalPage extends Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}></ModalHeader>
           <ModalBody>
-            <center><img src="https://hemochromatosishelp.com/wp-content/uploads/2017/08/Computer-Icon.png" width="200px" /></center>
+            <center><img src="https://hemochromatosishelp.com/wp-content/uploads/2017/08/Computer-Icon.png" alt="computer" width="200px" /></center>
 
             <DeviceList devices={devices} accessToken={accessToken} setDeviceId={setDeviceId} />
 
