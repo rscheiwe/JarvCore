@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ModalPage from './ModalPage'
+import DevicesModal from './DevicesModal'
 
 export default class SpotifyController extends Component {
 
@@ -123,7 +123,7 @@ export default class SpotifyController extends Component {
       }
     })
   }
-  
+
   setDeviceId = (deviceId) => {
     this.setState({ deviceId })
   }
@@ -132,7 +132,7 @@ export default class SpotifyController extends Component {
     const { devices, accessToken } = this.state
     return (
       <div>
-        <ModalPage devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} />
+        <DevicesModal devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} />
       </div>
     )
   }
