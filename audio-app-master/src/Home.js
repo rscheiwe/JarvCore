@@ -5,7 +5,7 @@ import Sketch2 from './sketch2.js'
 import './Home.css'
 import MicrophoneViz from './MicrophoneViz.js'
 import CreateImage from './CreateImage.js'
-import ModalPage from './components/ModalPage.js'
+import SpotifyController from './components/SpotifyController'
 
 // Import the Artyom library
 import Artyom from 'artyom.js';
@@ -33,8 +33,6 @@ export default class Home extends Component {
     // Add `this` context to the handler functions
     this.startAssistant = this.startAssistant.bind(this);
     this.stopAssistant = this.stopAssistant.bind(this);
-    // this.speakText = this.speakText.bind(this);
-    // this.handleTextareaChange = this.handleTextareaChange.bind(this);
 
     // Prepare simple state
     this.state = {
@@ -43,165 +41,26 @@ export default class Home extends Component {
         artyomIsReading: false,
         finalCommand: "",
         text: 'Richard',
-        accessToken: null,
-        devices: [],
-        deviceId: null,
-        currentTrack: null,
         searchResults: [],
-        playList: null,
-        tokenExpires: null,
-        refreshToken: null
         };
 
     // Load some commands to Artyom using the commands manager
     let CommandsManager = new ArtyomCommandsManager(Jarvis);
     CommandsManager.loadCommands();
-    // setInterval(() => console.log(spokenword), 1000)
-    // console.log(CommandsManager.loadCommands().spokenword)
 }
-
-  // loadVoices = (msg) => {
-  //   let timer = setInterval(() => {
-  //     let voices = speechSynthesis.getVoices();
-  //     // console.log(voices);
-  //     if (voices.length !== 0) {
-  //       let message = new SpeechSynthesisUtterance(msg);
-  //       message.voice = voices[49];
-  //       speechSynthesis.speak(message);
-  //       clearInterval(timer);
-  //       }
-  //   }, 20);
-  // }
 
   loadVoices = () => {
     let timer = setInterval(() => {
-      let voices = Jarvis.getVoices();
-      // console.log(voices);
+      let voices = Jarvis.getVoices()
       if (voices.length !== 0) {
-        // let message = new SpeechSynthesisUtterance(msg);
         Jarvis.voice = voices[49];
-        // speechSynthesis.speak(message);
         clearInterval(timer);
         }
     }, 20);
   }
 
   componentDidMount(){
-    // if (this.state.finalCommand !== prevState.finalCommand) return true
     document.querySelector("#talkButton").click();
-
-    let splitUrl = document.URL.split("&token=")
-    let accessToken = splitUrl[1]
-    let splitOnExpires = splitUrl[0].split('&expires=')
-    let tokenExpires = splitOnExpires[1]
-    let refreshToken = splitOnExpires[0].split('refresh=')[1]
-
-    // sets the access token, refresh token, and expiration time in state
-    // then gets the list of current devices and sets an interval to refresh the current track
-    this.setState({ accessToken, tokenExpires, refreshToken }, () => {
-      const headers = { 'Authorization': `Bearer ${this.state.accessToken}` }
-
-      fetch('https://api.spotify.com/v1/me/player/devices', {
-        method: "GET",
-        headers: headers })
-        .then(r => r.json())
-        .then(({ devices }) => {
-          if (!devices || devices === this.state.devices) return
-          this.setState({ devices }, () => document.querySelector(".Ripple-parent").click())
-        })
-        .then(() => {
-          this.trackRefresh = setInterval(() => {
-            fetch('https://api.spotify.com/v1/me/player', {
-              method: 'GET',
-              headers: headers })
-            .then(r => {
-              if(r.status === 204) {
-                return '204'
-              } else {
-                return r.json()
-              }
-            })
-            .then(json => {
-              if (json === '204' || !json.item) {
-                return
-              } else if ( this.state.currentTrack === null || json.item.id !== this.state.currentTrack.id ){
-                this.setState({ currentTrack: json.item })
-              }
-            })
-          }, 2000)
-        })
-    })
-
-    this.refreshPlayer = setInterval(this.refreshPlayerStatus, 5000)
-
-    this.deviceRefresh = setInterval(this.refreshDevices, 2000)
-
-    this.refreshTokens = setInterval(this.refreshAccessToken, 300000)
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.trackRefresh)
-    clearInterval(this.refreshPlayer)
-    clearInterval(this.deviceRefresh)
-    clearInterval(this.refreshTokens)
-  }
-
-  refreshAccessToken = () => {
-    let currentTime = parseInt(Date.now().toString().slice(0, 10))
-    if(this.state.tokenExpires - 500 < currentTime) {
-      fetch('http://localhost:3000/refresh', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Accepts': 'application/json'},
-        body: JSON.stringify({refresh_token: this.state.refreshToken})
-      })
-      .then(r => r.json())
-      .then(j => {
-        this.setState({ accessToken: j.access_token, tokenExpires: j.expires })
-      })
-    }
-  }
-
-  refreshDevices = () => {
-    fetch('https://api.spotify.com/v1/me/player/devices', {
-      method: "GET",
-      headers: { 'Authorization': `Bearer ${this.state.accessToken}` }})
-      .then(r => r.json())
-      .then(({ devices }) => {
-        let ids = devices.map(device => device.id).join('')
-        let stateIds = this.state.devices.map(device => device.id).join('')
-        if (ids === stateIds) return
-
-        this.setState({ devices })
-      })
-  }
-
-  refreshPlayerStatus = () => {
-    fetch('https://api.spotify.com/v1/me/player', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${this.state.accessToken}`,
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(r => {
-      return (r.status === 204 ? '204' : r.json())
-    })
-    .then(json => {
-      if (json === '204'){
-        return
-      } else {
-        if (!json.context && this.state.playList !== null) {
-          this.setState({ playList: null })
-        } else {
-          let listArray = json.context.href.split('/')
-          let listId = listArray[listArray.length - 1]
-
-          if(this.state.playList !== listId){
-            this.setState({ playList: listId })
-          }
-        }
-      }
-    })
   }
 
   search = (query) => {
@@ -212,10 +71,6 @@ export default class Home extends Component {
       headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
     }).then(r => r.json())
     .then(searchResults => this.setState({ searchResults }))
-  }
-
-  setDeviceId = (deviceId) => {
-    this.setState({ deviceId })
   }
 
   startAssistant() {
@@ -231,13 +86,7 @@ export default class Home extends Component {
         listen: true
 
     }).then(() => {
-        // Display loaded commands in the console
-
-        console.log(Jarvis.getAvailableCommands());
-
         Jarvis.say("Hello. Open Spotify on one of your devices and select it.");
-
-        // Jarvis.say("How are you")
 
         _this.setState({
             artyomActive: true
@@ -269,36 +118,29 @@ export default class Home extends Component {
   }
 
 	render () {
-    const { devices, deviceId, accessToken, playList, currentTrack, searchResults } = this.state
-    // console.log(Artyom.getVoices())
-    // console.log(CreateImage.createImage()
+
 		return (
 			<div className="homeBody">
-
+        <SpotifyController />
 
         <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0", width:"900px", height:"200px"}}>
-
           <P5Wrapper sketch={Sketch2} />
-
-
         </div>
 
         <div style={{position: "relative",zIndex: "99999999999"}}>
-          <ModalPage devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} />
           <div id="talkButton" onClick={this.startAssistant}/>
           <input type="button" value="Stop Artyom" disabled={!this.state.artyomActive} onClick={this.stopAssistant}/>
         </div>
 
         {/* {this.loadVoices("Hello. I am Jarvis.")} */}
 
-      {/*{spokenword === null ? null : <p>{spokenword}</p>} */}
+        {/*{spokenword === null ? null : <p>{spokenword}</p>} */}
 
        {/* { devices.length === 0 ? <div> Open Spotify on one of our devices to get started <br /> <button onClick={this.refreshDevices}>Refresh device list</button></div> : null }
        { !deviceId ? <DeviceList devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} /> : null } */}
        {/* { currentTrack ? <NowPlaying track={currentTrack}/> : null} */}
        {/* <SearchBar search={this.search} /> */}
        {/* { searchResults.length !== 0 ? <ResultCardsContainer searchResults={searchResults} accessToken={accessToken} playList={playList} /> : null } */}
-
 
         <CreateImage msg={["hello " + this.state.finalCommand]}/>
         <MicrophoneViz />

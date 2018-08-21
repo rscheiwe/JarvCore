@@ -4,7 +4,7 @@ export default class ResultCard extends Component {
 
   addToCurrentPlayList = (e) => {
     const { accessToken, playList } = this.props
-    const { uri, id } = this.props.result
+    const { id } = this.props.result
 
     fetch(`https://api.spotify.com/v1/albums/${id}`, {
       method: 'GET',
