@@ -38,8 +38,7 @@ export default class Home extends Component {
         textareaValue: "",
         artyomIsReading: false,
         finalCommand: "",
-        text: 'Richard',
-        searchResults: [],
+        text: 'Richard'
         };
 
     // Load some commands to Artyom using the commands manager
@@ -59,16 +58,6 @@ export default class Home extends Component {
 
   componentDidMount(){
     document.querySelector("#talkButton").click();
-  }
-
-  search = (query) => {
-    const formatQuery = query.replace(' ', '%20')
-
-    fetch(`http://localhost:3000/albums/${formatQuery}`, {
-      method: 'GET',
-      headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}
-    }).then(r => r.json())
-    .then(searchResults => this.setState({ searchResults }))
   }
 
   startAssistant() {
@@ -137,8 +126,6 @@ export default class Home extends Component {
        {/* { devices.length === 0 ? <div> Open Spotify on one of our devices to get started <br /> <button onClick={this.refreshDevices}>Refresh device list</button></div> : null }
        { !deviceId ? <DeviceList devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} /> : null } */}
        {/* { currentTrack ? <NowPlaying track={currentTrack}/> : null} */}
-       {/* <SearchBar search={this.search} /> */}
-       {/* { searchResults.length !== 0 ? <ResultCardsContainer searchResults={searchResults} accessToken={accessToken} playList={playList} /> : null } */}
 
         <CreateImage msg={["hello " + this.state.finalCommand]}/>
         <MicrophoneViz />

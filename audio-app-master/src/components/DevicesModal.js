@@ -13,11 +13,11 @@ class DevicesModal extends Component {
   }
 
   render() {
-    // console.log(this.props)
     const { devices, accessToken, setDeviceId } = this.props
+
     return (
       <Container>
-        <Button color="secondary" onClick={this.toggle}>Modal</Button>
+        <Button color="secondary" onClick={this.toggle} className="devices-modal-button">Devices</Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}></ModalHeader>
           <ModalBody>
