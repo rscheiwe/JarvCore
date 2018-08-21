@@ -116,7 +116,7 @@ export default class Home extends Component {
 
         <div style={{position: "relative",zIndex: "99999999999"}}>
           <div id="talkButton" onClick={this.startAssistant}/>
-          <input type="button" value="Stop Artyom" disabled={!this.state.artyomActive} onClick={this.stopAssistant}/>
+          {/* <input type="button" value="Stop Artyom" disabled={!this.state.artyomActive} onClick={this.stopAssistant}/> */}
         </div>
 
         {/* {this.loadVoices("Hello. I am Jarvis.")} */}
