@@ -269,8 +269,8 @@ export default class Home extends Component {
        <SearchBar search={this.search} />
        { searchResults.length !== 0 ? <ResultCardsContainer searchResults={searchResults} accessToken={accessToken} playList={playList} /> : null }
     */}
+<CreateImage msg={["hello " + this.state.finalCommand]}/>
 
-    <CreateImage msg={["hello " + this.state.finalCommand]}/>
         <MicrophoneViz />
 
           <svg preserveAspectRatio="none" id="visualizer" version="1.1" >
