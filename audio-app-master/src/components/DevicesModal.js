@@ -21,7 +21,7 @@ class DevicesModal extends Component {
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalHeader toggle={this.toggle}></ModalHeader>
           <ModalBody>
-            <center><img src="https://hemochromatosishelp.com/wp-content/uploads/2017/08/Computer-Icon.png" alt="computer" width="200px" /></center>
+            <center><img src="https://cdn.freebiesupply.com/logos/large/2x/spotify-2-logo-png-transparent.png" alt="computer" width="200px" /></center>
 
             <DeviceList devices={devices} accessToken={accessToken} setDeviceId={setDeviceId} toggle={this.toggle} />
 
