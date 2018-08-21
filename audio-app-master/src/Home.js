@@ -28,7 +28,7 @@ export default class Home extends Component {
 
 
   constructor (props, context){
-    
+
     super(props, context);
     // Add `this` context to the handler functions
     this.startAssistant = this.startAssistant.bind(this);
@@ -46,8 +46,16 @@ export default class Home extends Component {
 
     // Load some commands to Artyom using the commands manager
     let CommandsManager = new ArtyomCommandsManager(Jarvis);
+    console.log(props)
     CommandsManager.loadCommands();
 }
+
+//   finalCommander () {
+//     // console.log("HIT")
+//     ( () => {
+//       return this.setState({finalCommand: finalCommand})
+//   })()
+// }
 
   loadVoices = () => {
     let timer = setInterval(() => {
@@ -118,7 +126,7 @@ export default class Home extends Component {
   }
 
 	render () {
-
+    console.log(this.state.finalCommand)
 		return (
 			<div className="homeBody">
         <SpotifyController />

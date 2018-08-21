@@ -325,7 +325,6 @@ const CreateImage = (props) => {
             cs.top = cs.left = "0px";
             cs.zIndex = 1000;
             document.body.appendChild(c);
-            console.log("hello", c)
             c.setAttribute("id", "canvasText")
           }
           return c;
