@@ -14,7 +14,6 @@ import Artyom from 'artyom.js';
 //                           spokenword,
 //                           finalCommand
 //                          } from './ArtyomCommands.js';
-
 import DeviceList from './components/DeviceList'
 import NowPlaying from './components/NowPlaying'
 import SearchBar from './components/SearchBar'
@@ -37,12 +36,13 @@ export default class Home extends Component {
 
     // Prepare simple state
     this.state = {
-        artyomActive: false,
-        textareaValue: "",
-        artyomIsReading: false,
-        finalCommand: "",
-        text: 'Richard'
-        };
+      accessToken: null,
+      artyomActive: false,
+      textareaValue: "",
+      artyomIsReading: false,
+      finalCommand: "",
+      text: 'Richard'
+    };
 
     // Load some commands to Artyom using the commands manager
     // let CommandsManager = new ArtyomCommandsManager(Jarvis);
@@ -67,58 +67,113 @@ export default class Home extends Component {
   //   }, 20);
   // }
 
+  commands = () => {
+    return [
+      {
+        indexes: ["search *"],
+        smart: true,
+        action: (i, query) => {
+          Jarvis.say("Okay! Here's some music by " + query)
+          let searchInput = document.querySelector('.search-input-field')
+
+          if (!searchInput) {
+            document.querySelector('.search-modal-button').click()
+            searchInput = document.querySelector('.search-input-field')
+          }
+
+          searchInput.value = query
+          document.querySelector('.search-form-button').click()
+        }
+      },
+      {
+        indexes: ["close search"],
+        action: () => {
+          document.querySelector('.search-modal-button').click()
+        }
+      },
+      {
+        indexes: ["play"],
+        action: () => {
+          Jarvis.say("Okay. let's get this party started")
+          fetch('https://api.spotify.com/v1/me/player/play', {
+            method: 'PUT',
+            headers: this.headers()
+          })
+        }
+      },
+      {
+        indexes: ["pause track"],
+        action: () => {
+          Jarvis.say("Okay. letss take a break")
+          fetch('https://api.spotify.com/v1/me/player/pause', {
+            method: 'PUT',
+            headers: this.headers()
+          })
+        }
+      },
+      {
+        indexes: ["next"],
+        action: () => {
+          Jarvis.say('Okay. skipping ahead')
+          fetch('https://api.spotify.com/v1/me/player/next', {
+            method: 'POST',
+            headers: this.headers()
+          })
+        }
+      },
+      {
+        indexes: ["previous"],
+        action: () => {
+          Jarvis.say("You're right, that one was a banger")
+          fetch('https://api.spotify.com/v1/me/player/previous', {
+            method: 'POST',
+            headers: this.headers()
+          })
+        }
+      },
+      {
+        indexes: ["turn shuffle off"],
+        action: () => {
+          Jarvis.say('Okay. bye bye shuffle')
+          fetch(`https://api.spotify.com/v1/me/player/shuffle?state=false`, {
+            method: 'PUT',
+            headers: this.headers()
+          })
+        }
+      },
+      {
+        indexes: ["turn shuffle on"],
+        action: () => {
+          Jarvis.say('Okay. shuffle time')
+          fetch(`https://api.spotify.com/v1/me/player/shuffle?state=true`, {
+            method: 'PUT',
+            headers: this.headers()
+          })
+        }
+      },
+      {
+        indexes: ["open devices"],
+        action: () => {
+          document.querySelector('.devices-modal-button').click()
+        }
+      }
+    ]
+  }
+
   componentDidMount(){
     document.querySelector("#talkButton").click();
+    Jarvis.addCommands(this.commands());
+  }
 
-    Jarvis.addCommands([
-    {
-      indexes: ["Hello"],
-      action: () => {
-          Jarvis.say("Hello, how are you?");
-      }
-    },
-    {
-      indexes: ["I want *", "Not *"],
-      smart: true,
-      action: (i, wildcard) => {
-        if (i === 0) {
-          Jarvis.say("You want" + wildcard)
-          spokenword = wildcard
-        } else if (i === 1) {
-          Jarvis.say("Ok, sorry. Please tell me again")
-        }
-      }
-    },
-    {
-      indexes: ["Yes"],
-      action: () => {
-        Jarvis.say("great! Searching" + spokenword);
-        // this.setSomeVariable(spokenword)
-        this.setState({finalCommand: spokenword})
-      }
-    },
-    {
-      indexes: ["search *"],
-      smart: true,
-      action: (i, query) => {
-        let searchInput = document.querySelector('.search-input-field')
+  headers = () => {
+    return {
+      'Authorization': `Bearer ${this.state.accessToken}`,
+      'Content-Type': 'application/json'
+    }
+  }
 
-        if (!searchInput) {
-          document.querySelector('.search-modal-button').click()
-          searchInput = document.querySelector('.search-input-field')
-        }
-
-        searchInput.value = query
-        document.querySelector('.search-form-button').click()
-      }
-    },
-    {
-      indexes: ["close search"],
-      action: () => {
-        document.querySelector('.search-modal-button').click()
-      }
-    },
-  ]);
+  setAccessToken = (accessToken) => {
+    this.setState({ accessToken })
   }
 
   startAssistant() {
@@ -169,7 +224,7 @@ export default class Home extends Component {
     console.log(this.state.finalCommand)
 		return (
 			<div className="homeBody">
-        <SpotifyController />
+        <SpotifyController accessToken={this.state.accessToken} setAccessToken={this.setAccessToken} />
 
         <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0", width:"900px", height:"200px"}}>
           <P5Wrapper sketch={Sketch2} />

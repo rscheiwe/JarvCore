@@ -132,7 +132,7 @@ class ArtyomCommandsManager {
               indexes: ["search *"],
               smart: true,
               action: (i, query) => {
-                Artyom.say("Okay! Here's some music by " + query)
+                
                 let searchInput = document.querySelector('.search-input-field')
 
                 if (!searchInput) {

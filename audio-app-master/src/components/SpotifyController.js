@@ -5,7 +5,6 @@ import SearchModal from './SearchModal'
 export default class SpotifyController extends Component {
 
   state = {
-    accessToken: null,
     devices: [],
     deviceId: null,
     currentTrack: null,
@@ -22,8 +21,9 @@ export default class SpotifyController extends Component {
     let tokenExpires = splitOnExpires[1]
     let refreshToken = splitOnExpires[0].split('refresh=')[1]
 
-    this.setState({ accessToken, tokenExpires, refreshToken }, () => {
-      const headers = { 'Authorization': `Bearer ${this.state.accessToken}` }
+    this.props.setAccessToken(accessToken)
+    this.setState({ tokenExpires, refreshToken }, () => {
+      const headers = { 'Authorization': `Bearer ${this.props.accessToken}` }
 
       fetch('https://api.spotify.com/v1/me/player/devices', {
         method: "GET",
@@ -56,8 +56,8 @@ export default class SpotifyController extends Component {
         })
     })
 
-    this.refreshPlayer = setInterval(this.refreshPlayerStatus, 5000)
-    this.deviceRefresh = setInterval(this.refreshDevices, 2000)
+    this.refreshPlayer = setInterval(this.refreshPlayerStatus, 8000)
+    this.deviceRefresh = setInterval(this.refreshDevices, 8000)
     this.refreshTokens = setInterval(this.refreshAccessToken, 300000)
   }
 
@@ -86,7 +86,7 @@ export default class SpotifyController extends Component {
   refreshDevices = () => {
     fetch('https://api.spotify.com/v1/me/player/devices', {
       method: "GET",
-      headers: { 'Authorization': `Bearer ${this.state.accessToken}` }})
+      headers: { 'Authorization': `Bearer ${this.props.accessToken}` }})
       .then(r => r.json())
       .then(({ devices }) => {
         let ids = devices.map(device => device.id).join('')
@@ -101,7 +101,7 @@ export default class SpotifyController extends Component {
     fetch('https://api.spotify.com/v1/me/player', {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${this.state.accessToken}`,
+        'Authorization': `Bearer ${this.props.accessToken}`,
         'Content-Type': 'application/json'
       }
     })
@@ -141,7 +141,8 @@ export default class SpotifyController extends Component {
   }
 
   render() {
-    const { devices, accessToken, searchResults, playList } = this.state
+    const { devices, searchResults, playList } = this.state
+    const { accessToken } = this.props
 
     return (
       <div>
