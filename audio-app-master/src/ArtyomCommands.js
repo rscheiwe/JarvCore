@@ -12,6 +12,7 @@ class ArtyomCommandsManager {
     // The ArtyomCommandsManager class expects as argument in the constructor
     // an already declared instance of Artyom.js
     constructor (ArtyomInstance) {
+      
 
         this._artyom = ArtyomInstance;
 

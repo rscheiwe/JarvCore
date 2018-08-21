@@ -28,7 +28,7 @@ export default class Home extends Component {
 
 
   constructor (props, context){
-
+    
     super(props, context);
     // Add `this` context to the handler functions
     this.startAssistant = this.startAssistant.bind(this);

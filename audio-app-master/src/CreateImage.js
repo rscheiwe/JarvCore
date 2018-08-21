@@ -155,7 +155,7 @@ const CreateImage = (props) => {
       fx : {
           speed : 0.4,
           drag : 0.20,
-          size : 1.5,
+          size : 2.5,
           // jiggle : 4,
       },
       // direction 1 move in -1 move out
