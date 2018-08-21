@@ -19,7 +19,6 @@ export default class SearchModal extends Component {
       <Container>
         <Button style={{opacity: 0}} onClick={this.toggle} className="search-modal-button"></Button>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}></ModalHeader>
           <ModalBody>
 
             <SearchBar search={search} />

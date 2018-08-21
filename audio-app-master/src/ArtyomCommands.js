@@ -153,6 +153,15 @@ class ArtyomCommandsManager {
               }
             },
             {
+              indexes: ["search *"],
+              smart: true,
+              action: (i, query) => {
+                document.querySelector('.search-modal-button').click()
+                document.querySelector('.search-input-field').value = query
+                document.querySelector('.search-form-button').click()
+              }
+            },
+            {
               indexes: ["open devices"],
               action: () => {
                 document.querySelector('.devices-modal-button').click()
