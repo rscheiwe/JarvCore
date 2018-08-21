@@ -98,6 +98,7 @@ export default class Home extends Component {
         headers: headers })
         .then(r => r.json())
         .then(({ devices }) => {
+          if (!devices) return
           this.setState({ devices }, () => document.querySelector(".Ripple-parent").click())
         })
         .then(() => {
@@ -113,7 +114,7 @@ export default class Home extends Component {
               }
             })
             .then(json => {
-              if (json === '204'){
+              if (json === '204' || !json.item) {
                 return
               } else if ( this.state.currentTrack === null || json.item.id !== this.state.currentTrack.id ){
                 this.setState({ currentTrack: json.item })
@@ -138,7 +139,7 @@ export default class Home extends Component {
         if (json === '204'){
           return
         } else {
-          if (json.context === null) {
+          if (!json.context) {
             this.setState({ playList: null })
           } else {
             let listArray = json.context.href.split('/')
@@ -151,11 +152,12 @@ export default class Home extends Component {
         }
       })
     }, 5000)
-  }
+  this.deviceRefresh = setInterval(this.refreshDevices, 2000)}
 
   componentWillUnmount() {
     clearInterval(this.trackRefresh)
     clearInterval(this.refreshPlayerStatus)
+    clearInterval(this.deviceRefresh)
   }
 
   refreshDevices = () => {
@@ -199,7 +201,7 @@ export default class Home extends Component {
 
         console.log(Jarvis.getAvailableCommands());
 
-        Jarvis.say("Hello. Please select your device");
+        Jarvis.say("Hello. Open Spotify on one of your devices and select it.");
 
         // Jarvis.say("How are you")
 
