@@ -427,12 +427,14 @@ const CreateImage = (props) => {
 
 function createImage(w,h){
 
-  if (document.getElementById("canvasText")) {
+
     // console.log("HELLO")
-    let el = document.getElementById("canvasText")
+  let el = document.getElementById("canvasText")
+  if (el) {
     document.body.removeChild(el)
-    // document.getElementById("canvasText").removeElement()
   }
+    // document.getElementById("canvasText").removeElement()
+  
   let i = document.createElement("canvas")
   // i.setAttribute("id", "canvasText")
   i.width=w;

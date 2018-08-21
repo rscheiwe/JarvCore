@@ -98,7 +98,7 @@ export default class Home extends Component {
         headers: headers })
         .then(r => r.json())
         .then(({ devices }) => {
-          if (!devices) return
+          if (!devices || devices === this.state.devices) return
           this.setState({ devices }, () => document.querySelector(".Ripple-parent").click())
         })
         .then(() => {
@@ -139,7 +139,7 @@ export default class Home extends Component {
         if (json === '204'){
           return
         } else {
-          if (!json.context) {
+          if (!json.context && this.state.playList !== null) {
             this.setState({ playList: null })
           } else {
             let listArray = json.context.href.split('/')
@@ -166,6 +166,10 @@ export default class Home extends Component {
       headers: { 'Authorization': `Bearer ${this.state.accessToken}` }})
       .then(r => r.json())
       .then(({ devices }) => {
+        let ids = devices.map(device => device.id).join('')
+        let stateIds = this.state.devices.map(device => device.id).join('')
+        if (ids === stateIds) return
+
         this.setState({ devices })
       })
   }
@@ -246,7 +250,6 @@ export default class Home extends Component {
 
           <P5Wrapper sketch={Sketch2} />
 
-          <CreateImage msg={["hello " + this.state.finalCommand]}/>
 
         </div>
 
@@ -258,7 +261,7 @@ export default class Home extends Component {
 
         {/* {this.loadVoices("Hello. I am Jarvis.")} */}
 
-      {spokenword === null ? null : <p>{spokenword}</p>}
+      {/*{spokenword === null ? null : <p>{spokenword}</p>} */}
 
        {/* { devices.length === 0 ? <div> Open Spotify on one of our devices to get started <br /> <button onClick={this.refreshDevices}>Refresh device list</button></div> : null }
        { !deviceId ? <DeviceList devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} /> : null }
@@ -267,6 +270,7 @@ export default class Home extends Component {
        { searchResults.length !== 0 ? <ResultCardsContainer searchResults={searchResults} accessToken={accessToken} playList={playList} /> : null }
     */}
 
+    <CreateImage msg={["hello " + this.state.finalCommand]}/>
         <MicrophoneViz />
 
           <svg preserveAspectRatio="none" id="visualizer" version="1.1" >
