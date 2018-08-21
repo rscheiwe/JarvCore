@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 export default class Device extends Component {
 
   selectDevice = (e) => {
-    const { device, setDeviceId } = this.props
+    const { toggle, device, setDeviceId } = this.props
 
     fetch('https://api.spotify.com/v1/me/player', {
       method: 'PUT',
@@ -15,14 +15,17 @@ export default class Device extends Component {
         device_ids: [device.id],
         play: true
       })
-    }).then(() => setDeviceId(device.id))
+    }).then(() => {
+      setDeviceId(device.id)
+      toggle()
+    })
   }
 
   render() {
     const { device } = this.props
 
     return (
-      <li onClick={this.selectDevice}>{device.name}</li>
+      <li onClick={this.selectDevice}><a>{device.name}</a></li>
     )
   }
 }

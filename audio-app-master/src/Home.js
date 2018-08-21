@@ -26,9 +26,7 @@ Jarvis.ArtyomVoicesIdentifiers["en-GB"] = ["Google UK English Female", "Google U
 
 export default class Home extends Component {
 
-
   constructor (props, context){
-
     super(props, context);
     // Add `this` context to the handler functions
     this.startAssistant = this.startAssistant.bind(this);
@@ -47,7 +45,7 @@ export default class Home extends Component {
     // Load some commands to Artyom using the commands manager
     let CommandsManager = new ArtyomCommandsManager(Jarvis);
     CommandsManager.loadCommands();
-}
+  }
 
   loadVoices = () => {
     let timer = setInterval(() => {
