@@ -67,28 +67,6 @@ export default class Home extends Component {
   //   }, 20);
   // }
 
-<<<<<<< HEAD
-  componentDidMount(){
-
-    document.querySelector("#talkButton").click();
-
-    Jarvis.addCommands([
-    {
-      indexes: ["Hello"],
-      action: () => {
-          Jarvis.say("Hello, how are you?");
-      }
-    },
-    {
-      indexes: ["I want *", "Not *"],
-      smart: true,
-      action: (i, wildcard) => {
-        if (i === 0) {
-          Jarvis.say("You want" + wildcard)
-          spokenword = wildcard
-        } else if (i === 1) {
-          Jarvis.say("Ok, sorry. Please tell me again")
-=======
   commands = () => {
     return [
       {
@@ -105,7 +83,6 @@ export default class Home extends Component {
 
           searchInput.value = query
           document.querySelector('.search-form-button').click()
->>>>>>> 215ed0572e5e1b3c9f79896d01863f9cfccc1320
         }
       },
       {
@@ -200,7 +177,6 @@ export default class Home extends Component {
   }
 
   startAssistant() {
-
     let _this = this;
 
     console.log("Artyom succesfully started !");
@@ -221,11 +197,6 @@ export default class Home extends Component {
     }).catch((err) => {
         console.error("Oopsy daisy, this shouldn't happen !", err);
     });
-  }
-
-  runJarvis() {
-    console.log("HELLO FROM THE COMPUTER")
-    setInterval(this.startAssistant, 10000)
   }
 
   stopAssistant() {
@@ -253,13 +224,8 @@ export default class Home extends Component {
     console.log(this.state.finalCommand)
 		return (
 			<div className="homeBody">
-<<<<<<< HEAD
-        <SpotifyController />
-        
-=======
         <SpotifyController accessToken={this.state.accessToken} setAccessToken={this.setAccessToken} />
 
->>>>>>> 215ed0572e5e1b3c9f79896d01863f9cfccc1320
         <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0", width:"900px", height:"200px"}}>
           <P5Wrapper sketch={Sketch2} />
         </div>
