@@ -1,13 +1,16 @@
-html, .homeBody {
+.homeBody {
 width: 100%;
 height: 100%;
 padding: 0;
 margin: 0;
-background-image: radial-gradient(circle at center, #27588e 0%, #103359 25%, #223347 60%, #131a22 85% );
+background-image: radial-gradient(circle at center, #27588e 0%, #103359 25%, #223347 60%, #131a22 85% ); */
+/* background-color: blue; */
 font-size: 0;
+z-index: -1000000;
 }
 
 svg{
+background-image: radial-gradient(circle at center, #27588e 0%, #103359 25%, #223347 60%, #131a22 85% ); */
 display: block;
 width: 100%;
 height: 100%;
