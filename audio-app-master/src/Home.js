@@ -68,6 +68,7 @@ export default class Home extends Component {
   // }
 
   componentDidMount(){
+
     document.querySelector("#talkButton").click();
 
     Jarvis.addCommands([
@@ -122,6 +123,7 @@ export default class Home extends Component {
   }
 
   startAssistant() {
+
     let _this = this;
 
     console.log("Artyom succesfully started !");
@@ -142,6 +144,11 @@ export default class Home extends Component {
     }).catch((err) => {
         console.error("Oopsy daisy, this shouldn't happen !", err);
     });
+  }
+
+  runJarvis() {
+    console.log("HELLO FROM THE COMPUTER")
+    setInterval(this.startAssistant, 10000)
   }
 
   stopAssistant() {
@@ -170,7 +177,7 @@ export default class Home extends Component {
 		return (
 			<div className="homeBody">
         <SpotifyController />
-
+        
         <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0", width:"900px", height:"200px"}}>
           <P5Wrapper sketch={Sketch2} />
         </div>
