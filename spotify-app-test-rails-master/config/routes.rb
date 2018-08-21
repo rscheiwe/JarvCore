@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get '/tracks/:name', to: 'tracks#index'
   get '/albums/:name', to: 'albums#index'
   get '/auth/spotify/callback', to: 'sessions#create'
+  post '/refresh', to: 'sessions#refresh'
 
   get '/login', to: 'login#create'
 
