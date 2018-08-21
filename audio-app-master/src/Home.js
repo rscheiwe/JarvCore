@@ -48,7 +48,9 @@ export default class Home extends Component {
         deviceId: null,
         currentTrack: null,
         searchResults: [],
-        playList: null
+        playList: null,
+        tokenExpires: null,
+        refreshToken: null
         };
 
     // Load some commands to Artyom using the commands manager
@@ -88,9 +90,13 @@ export default class Home extends Component {
     // if (this.state.finalCommand !== prevState.finalCommand) return true
     document.querySelector("#talkButton").click();
 
-    let accessToken = document.URL.split("token=")[1]
+    let splitUrl = document.URL.split("&token=")
+    let accessToken = splitUrl[1]
+    let splitOnExpires = splitUrl[0].split('&expires=')
+    let tokenExpires = splitOnExpires[1]
+    let refreshToken = splitOnExpires[0].split('refresh=')[1]
 
-    this.setState({ accessToken }, () => {
+    this.setState({ accessToken, tokenExpires, refreshToken }, () => {
       const headers = { 'Authorization': `Bearer ${this.state.accessToken}` }
 
       fetch('https://api.spotify.com/v1/me/player/devices', {
@@ -152,12 +158,32 @@ export default class Home extends Component {
         }
       })
     }, 5000)
-  this.deviceRefresh = setInterval(this.refreshDevices, 2000)}
+
+    this.deviceRefresh = setInterval(this.refreshDevices, 2000)
+
+    this.refreshTokens = setInterval(this.refreshAccessToken, 300000)
+  }
 
   componentWillUnmount() {
     clearInterval(this.trackRefresh)
     clearInterval(this.refreshPlayerStatus)
     clearInterval(this.deviceRefresh)
+    clearInterval(this.refreshTokens)
+  }
+
+  refreshAccessToken = () => {
+    let currentTime = parseInt(Date.now().toString().slice(0, 10))
+    if(this.state.tokenExpires - 500 < currentTime) {
+      fetch('http://localhost:3000/refresh', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Accepts': 'application/json'},
+        body: JSON.stringify({refresh_token: this.state.refreshToken})
+      })
+      .then(r => r.json())
+      .then(j => {
+        this.setState({ accessToken: j.access_token, tokenExpires: j.expires })
+      })
+    }
   }
 
   refreshDevices = () => {
