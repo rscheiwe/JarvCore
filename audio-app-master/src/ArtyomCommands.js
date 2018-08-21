@@ -68,25 +68,6 @@ class ArtyomCommandsManager {
               }
             },
             {
-              indexes: ["Yes"],
-              action: () => {
-                  Artyom.say("great! Searching" + spokenword);
-                  // this.setSomeVariable(spokenword)
-                  finalCommand = spokenword
-              }
-            },
-            {
-              indexes: ["Generate reports of * of this year"],
-              smart: true,
-              action: (i, month) => {
-                  let year = new Date().getFullYear();
-
-                  Artyom.say(`Generating reports of ${month} ${year} `);
-
-                  Artyom.say("Ready ! What were you expecting? write some code you lazy bear !");
-              }
-            },
-            {
               indexes: ["play"],
               action: () => {
                 Artyom.say("Okay. let's get this party started")
@@ -150,6 +131,7 @@ class ArtyomCommandsManager {
               indexes: ["search *"],
               smart: true,
               action: (i, query) => {
+                Artyom.say("Okay! Here's some music by " + query)
                 let searchInput = document.querySelector('.search-input-field')
 
                 if (!searchInput) {
