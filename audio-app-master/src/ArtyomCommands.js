@@ -13,14 +13,15 @@ class ArtyomCommandsManager {
     // an already declared instance of Artyom.js
     constructor (ArtyomInstance) {
 
+
         this._artyom = ArtyomInstance;
 
-        this.setSomeVariable = this.setSomeVariable.bind(this);
+        // this.setSomeVariable = this.setSomeVariable.bind(this);
     }
 
-    setSomeVariable(spokenword) {
-      return spokenword
-    }
+    // setSomeVariable(spokenword) {
+    //   return spokenword
+    // }
 
     // Execute the loadCommands method to inject the methods to the instance of Artyom
     loadCommands(){

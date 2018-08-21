@@ -1,4 +1,5 @@
 import React from 'react'
+import TextImage from './TextImage.js'
 
 const CreateImage = (props) => {
 
@@ -36,7 +37,7 @@ const CreateImage = (props) => {
     }
     const moveOut = ()=>{
         particles.moveOut();
-        setTimeout(next,2000);
+        setTimeout(next,2500);
     }
     setTimeout(next,0);
   }
@@ -62,6 +63,8 @@ const CreateImage = (props) => {
   // }
 
   var tCan = createImage(100, 100);
+
+
 
   function createTextMap(text,size,font,style,fit){
     // function to conver to colour hex value
@@ -152,7 +155,7 @@ const CreateImage = (props) => {
       fx : {
           speed : 0.4,
           drag : 0.20,
-          size : 1.5,
+          size : 2.5,
           // jiggle : 4,
       },
       // direction 1 move in -1 move out
@@ -311,16 +314,22 @@ const CreateImage = (props) => {
       const RESIZE_DEBOUNCE_TIME = 100;
       var resizeTimeoutHandle;
       var firstRun = true;
+
       function createCanvas () {
           var c,cs;
-          cs = (c = document.createElement("canvas")).style;
-          cs.position = "absolute";
-          cs.top = cs.left = "0px";
-          cs.zIndex = 1000;
-          document.body.appendChild(c);
-          c.setAttribute("id", "canvasText")
+          // debugger
+          c = document.getElementById("canvasText")
+          if (!c) {
+            cs = (c = document.createElement("canvas")).style;
+            cs.position = "absolute";
+            cs.top = cs.left = "0px";
+            cs.zIndex = 1000;
+            document.body.appendChild(c);
+            c.setAttribute("id", "canvasText")
+          }
           return c;
       }
+
       function resizeCanvas () {
           if (canvas === undefined) { canvas = createCanvas() }
           canvas.width = window.innerWidth;
@@ -418,25 +427,26 @@ const CreateImage = (props) => {
       },0);
   })();
 
+
   return (
     <div>
-
+      {/*<reateImage w={w} h={h} />*/}
     </div>
   )
 }
 
 function createImage(w,h){
 
-
-    // console.log("HELLO")
   let el = document.getElementById("canvasText")
+  // debugger
   if (el) {
+    // el.remove(1)
     document.body.removeChild(el)
+    console.log("REMOVING")
   }
-    // document.getElementById("canvasText").removeElement()
-  
+
   let i = document.createElement("canvas")
-  // i.setAttribute("id", "canvasText")
+
   i.width=w;
   i.height=h;
   i.ctx=i.getContext("2d");
