@@ -6,7 +6,7 @@ import ResultCardsContainer from './ResultCardsContainer'
 export default class SearchModal extends Component {
 
   state = {
-    modal: true
+    modal: false
   }
 
   toggle = () => {
