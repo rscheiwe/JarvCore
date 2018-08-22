@@ -170,12 +170,12 @@ export default class Home extends Component {
         }
       },
       {
-          indexes: ["Yes"],
-          action: () => {
-              Jarvis.say("great! Searching" + spokenword);
-              // this.setSomeVariable(spokenword)
-              this.setState({finalCommand: spokenword})
-          }
+        indexes: ["Yes"],
+        action: () => {
+            Jarvis.say("great! Searching" + spokenword);
+            // this.setSomeVariable(spokenword)
+            this.setState({finalCommand: spokenword})
+        }
       },
     ]
   }
@@ -183,6 +183,7 @@ export default class Home extends Component {
   componentDidMount(){
     document.querySelector("#talkButton").click();
     Jarvis.addCommands(this.commands());
+    // setInterval(this.startAssistant, 10000)
   }
 
   headers = () => {
@@ -240,8 +241,9 @@ export default class Home extends Component {
   //   });
   // }
 
+
 	render () {
-    console.log(this.state.finalCommand)
+    // setInterval(() => console.log(this.state.artyomActive), 5000)
 		return (
 			<div className="homeBody">
       <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0"}}>
