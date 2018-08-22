@@ -73,7 +73,7 @@ export default class Home extends Component {
         }
       },
       {
-        indexes: ["close help"],
+        indexes: ["close menu"],
         action: () => {
           document.querySelector('.help-modal-button').click()
         }

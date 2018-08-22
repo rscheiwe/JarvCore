@@ -31,7 +31,7 @@ export default class HelpModal extends Component {
               <li>"Close search" to close the search menu</li>
               <li>"Open manual search" to open search menu and search by typing</li>
               <li>"Open devices" to open the list of your active devices and choose one for playback</li>
-              <li>"Close help" to close this menu</li>
+              <li>"Close menu" to close this menu</li>
             </ul>
           </ModalBody>
           <ModalFooter>
