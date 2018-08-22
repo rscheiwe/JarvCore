@@ -40,7 +40,7 @@ export default class Home extends Component {
       artyomActive: false,
       textareaValue: "",
       artyomIsReading: false,
-      finalCommand: "",
+      finalCommand: null,
       text: 'Richard'
     };
 
@@ -265,7 +265,7 @@ export default class Home extends Component {
 
 
         <div className="parent">
-        <CreateImage msg={["hello" + this.state.finalCommand]}/>
+        {this.state.finalCommand ? <CreateImage msg={[this.state.finalCommand]}/> : <CreateImage msg={["hello"]}/>}
         <MicrophoneViz />
           <svg preserveAspectRatio="none" id="visualizer" version="1.1" >
             <defs>
