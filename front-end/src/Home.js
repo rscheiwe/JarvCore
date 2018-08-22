@@ -210,10 +210,7 @@ export default class Home extends Component {
 
 
 	render () {
-<<<<<<< HEAD:audio-app-master/src/Home.js
-    // setInterval(() => console.log(this.state.artyomActive), 5000)
-=======
->>>>>>> 58ae2a20d8cbca27c5eb341bf56db4dee82eb805:front-end/src/Home.js
+
 		return (
 			<div className="homeBody">
         <p style={{color: 'white', marginLeft: '20px', marginTop: '5px'}}>Say "help" to see list of available voice commands</p>
