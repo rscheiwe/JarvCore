@@ -48,8 +48,8 @@ export default class SpotifyController extends Component {
             .then(json => {
               if (json === '204' || !json.item) {
                 return
-              } else if ( this.state.currentTrack === null || json.item.id !== this.state.currentTrack.id ){
-                this.setState({ currentTrack: json.item })
+              } else if ( this.props.currentTrack === null || json.item.id !== this.props.currentTrack.id ){
+                this.props.setCurrentTrack(json.item)
               }
             })
           }, 2000)

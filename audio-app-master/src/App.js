@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './Home'
+import Login from './components/Login'
 
 class App extends Component {
 
@@ -9,7 +10,7 @@ class App extends Component {
     return (
       <div className="App" >
         <Router>
-          <Route exact path='/' render={() => (<a href='http://localhost:3000/login' style={{position: "absolute", top: "100px"}}>Log in</a>)}/>
+          <Route exact path='/' render={Login}/>
         </Router>
         <Router>
           <Route path="/success" component={Home} />

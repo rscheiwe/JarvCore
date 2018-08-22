@@ -9,11 +9,7 @@ import SpotifyController from './components/SpotifyController'
 
 // Import the Artyom library
 import Artyom from 'artyom.js';
-// Import the previously created class to handle the commands from another file
-// import ArtyomCommands, { ArtyomCommandsManager,
-//                           spokenword,
-//                           finalCommand
-//                          } from './ArtyomCommands.js';
+
 import DeviceList from './components/DeviceList'
 import NowPlaying from './components/NowPlaying'
 import SearchBar from './components/SearchBar'
@@ -28,14 +24,8 @@ let spokenword;
 
 export default class Home extends Component {
 
-  constructor (props, context){
-    super(props, context);
-    // Add `this` context to the handler functions
-    this.startAssistant = this.startAssistant.bind(this);
-    // this.stopAssistant = this.stopAssistant.bind(this);
-
-    // Prepare simple state
-    this.state = {
+    state = {
+      currentTrack: null,
       accessToken: null,
       artyomActive: false,
       textareaValue: "",
@@ -43,29 +33,6 @@ export default class Home extends Component {
       finalCommand: null,
       text: 'Richard'
     };
-
-    // Load some commands to Artyom using the commands manager
-    // let CommandsManager = new ArtyomCommandsManager(Jarvis);
-    // console.log(props)
-    // CommandsManager.loadCommands();
-  }
-
-//   finalCommander () {
-//     // console.log("HIT")
-//     ( () => {
-//       return this.setState({finalCommand: finalCommand})
-//   })()
-// }
-
-  // loadVoices = () => {
-  //   let timer = setInterval(() => {
-  //     let voices = Jarvis.getVoices()
-  //     if (voices.length !== 0) {
-  //       Jarvis.voice = voices[49];
-  //       clearInterval(timer);
-  //       }
-  //   }, 20);
-  // }
 
   commands = () => {
     return [
@@ -196,7 +163,11 @@ export default class Home extends Component {
     this.setState({ accessToken })
   }
 
-  startAssistant() {
+  setCurrentTrack = (currentTrack) => {
+    this.setState({ currentTrack })
+  }
+
+  startAssistant = () => {
     // let _this = this;
 
     console.log("Artyom succesfully started !");
@@ -219,54 +190,27 @@ export default class Home extends Component {
     });
   }
 
-  // stopAssistant() {
-  //   let _this = this;
-  //
-  //   Jarvis.fatality().then(() => {
-  //       console.log("Jarvis has been succesfully stopped");
-  //
-  //       _this.setState({
-  //           artyomActive: false,
-  //           finalCommand: finalCommand
-  //       });
-  //
-  //   }).catch((err) => {
-  //       console.error("Oopsy daisy, this shouldn't happen neither!", err);
-  //
-  //       _this.setState({
-  //           artyomActive: false
-  //     });
-  //
-  //   });
-  // }
 
 	render () {
-    console.log(this.state.finalCommand)
 		return (
 			<div className="homeBody">
-      <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0"}}>
-        <P5Wrapper sketch={Sketch2} />
-      </div>
-        <SpotifyController accessToken={this.state.accessToken} setAccessToken={this.setAccessToken} />
 
+        <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0"}}>
+          <P5Wrapper sketch={Sketch2} />
+        </div>
+
+        <SpotifyController accessToken={this.state.accessToken} setAccessToken={this.setAccessToken} currentTrack={this.state.currentTrack} setCurrentTrack={this.setCurrentTrack}/>
 
         <div style={{position: "relative",zIndex: "99999999999"}}>
           <div id="talkButton" onClick={this.startAssistant}/>
-          {/* <input type="button" value="Stop Artyom" disabled={!this.state.artyomActive} onClick={this.stopAssistant}/> */}
         </div>
 
-        {/* {this.loadVoices("Hello. I am Jarvis.")} */}
-
-        {/*{spokenword === null ? null : <p>{spokenword}</p>} */}
-
-       {/* { devices.length === 0 ? <div> Open Spotify on one of our devices to get started <br /> <button onClick={this.refreshDevices}>Refresh device list</button></div> : null }
-       { !deviceId ? <DeviceList devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} /> : null } */}
-       {/* { currentTrack ? <NowPlaying track={currentTrack}/> : null} */}
-
-
         <div className="parent">
-        {this.state.finalCommand ? <CreateImage msg={[this.state.finalCommand]}/> : <CreateImage msg={["hello"]}/>}
-        <MicrophoneViz />
+
+          {this.state.currentTrack ? <CreateImage msg={[`${this.state.currentTrack.artists[0].name} - ${this.state.currentTrack.name}`]}/> : <CreateImage msg={["hello"]}/>}
+
+          <MicrophoneViz />
+
           <svg preserveAspectRatio="none" id="visualizer" version="1.1" >
             <defs>
               <mask id="mask">
@@ -282,9 +226,8 @@ export default class Home extends Component {
             </defs>
             <rect x="0" y="0" width="100%" height="100%" fill="url(#gradient)" mask="url(#mask)"></rect>
           </svg>
-          </div>
 
-        <h1>In <a href="https://codepen.io/zapplebee/full/gbNbZE/">Full Page view</a>, please allow the use of your microphone</h1>
+        </div>
 			</div>
 		);
 	}

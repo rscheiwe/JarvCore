@@ -10,7 +10,6 @@ class MicrophoneViz extends Component {
         var paths = document.getElementsByTagName('path');
         var visualizer = document.getElementById('visualizer');
         var mask = visualizer.getElementById('mask');
-        var h = document.getElementsByTagName('h1')[0];
         var path;
         var report = 0;
 
@@ -19,8 +18,6 @@ class MicrophoneViz extends Component {
             //https://bugzilla.mozilla.org/show_bug.cgi?id=965483
             //https://support.mozilla.org/en-US/questions/984179
             window.persistAudioStream = stream;
-            h.innerHTML = "Thanks";
-            h.setAttribute('style', 'opacity: 0;');
             var audioContent = new AudioContext();
             var audioStream = audioContent.createMediaStreamSource( stream );
             var analyser = audioContent.createAnalyser();
@@ -52,7 +49,6 @@ class MicrophoneViz extends Component {
         }
 
         var soundNotAllowed = function (error) {
-            h.innerHTML = "You must allow your microphone.";
             console.log(error);
         }
 
