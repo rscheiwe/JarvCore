@@ -155,8 +155,8 @@ const CreateImage = (props) => {
       fx : {
           speed : 0.4,
           drag : 0.20,
-          size : 2.5,
-          // jiggle : 4,
+          size : 2,
+          // jiggle : 60,
       },
       // direction 1 move in -1 move out
       direction : 1,
@@ -217,7 +217,7 @@ const CreateImage = (props) => {
           // var mP = this.mouseFX.power;
           // var mD = this.mouseFX.dist;
           // var mC = this.mouseFX.curve;
-          // var fxJ = this.fx.jiggle;
+          var fxJ = this.fx.jiggle;
           var fxD = this.fx.drag;
           var fxS = this.fx.speed;
 
