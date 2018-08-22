@@ -61,12 +61,14 @@ export default class Home extends Component {
       {
         indexes: ["open manual search"],
         action: () => {
+          Jarvis.say('Okay, if you insist')
           document.querySelector('.search-modal-button').click()
         }
       },
       {
         indexes: ["help"],
         action: () => {
+          Jarvis.say('Here are some words I understand')
           document.querySelector('.help-modal-button').click()
         }
       },
@@ -139,35 +141,24 @@ export default class Home extends Component {
       {
         indexes: ["open devices"],
         action: () => {
+          Jarvis.say('Select the device you want to control')
           document.querySelector('.devices-modal-button').click()
         }
-      },
-      {
-        indexes: ["I want *", "Not *"],
-        smart: true,
-        action: (i, wildcard) => {
-          if (i === 0) {
-            Jarvis.say("You want" + wildcard)
-            spokenword = wildcard
-          } else if (i === 1) {
-            Jarvis.say("Ok, sorry. Please tell me again")
-          }
-        }
-      },
-      {
-          indexes: ["Yes"],
-          action: () => {
-              Jarvis.say("great! Searching" + spokenword);
-              // this.setSomeVariable(spokenword)
-              this.setState({finalCommand: spokenword})
-          }
-      },
+      }
     ]
   }
 
-  componentDidMount(){
+  componentDidMount() {
     document.querySelector("#talkButton").click();
     Jarvis.addCommands(this.commands());
+
+    this.refreshJarvis = setInterval(() => {
+      Jarvis.obey()
+    }, 20000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.refreshJarvis)
   }
 
   headers = () => {
@@ -210,8 +201,8 @@ export default class Home extends Component {
 	render () {
 		return (
 			<div className="homeBody">
-        <p style={{color: 'white', marginLeft: '20px', marginTop: '5px'}}>Say "help" to see list of available voice commands</p>
         <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0"}}>
+          <p style={{color: 'white', marginLeft: '20px', marginTop: '5px'}}>Say "help" to see list of available voice commands</p>
           <P5Wrapper sketch={Sketch2} />
         </div>
 
@@ -223,7 +214,7 @@ export default class Home extends Component {
 
         <div className="parent">
 
-          {this.state.currentTrack ? <CreateImage msg={[`${this.state.currentTrack.artists[0].name} - ${this.state.currentTrack.name}`]}/> : <CreateImage msg={["hello"]}/>}
+          {this.state.currentTrack ? <CreateImage msg={[`${this.state.currentTrack.name}`]}/> : <CreateImage msg={["hello"]}/>}
 
           <MicrophoneViz />
 
