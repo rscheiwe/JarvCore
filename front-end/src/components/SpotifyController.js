@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import DevicesModal from './DevicesModal'
 import SearchModal from './SearchModal'
+import HelpModal from './HelpModal'
+
 
 export default class SpotifyController extends Component {
 
@@ -25,6 +27,8 @@ export default class SpotifyController extends Component {
     this.setState({ tokenExpires, refreshToken }, () => {
       const headers = { 'Authorization': `Bearer ${this.props.accessToken}` }
 
+      //setting current device for playback
+
       fetch('https://api.spotify.com/v1/me/player/devices', {
         method: "GET",
         headers: headers })
@@ -34,6 +38,9 @@ export default class SpotifyController extends Component {
           this.setState({ devices }, () => document.querySelector(".Ripple-parent").click())
         })
         .then(() => {
+
+          //setting an interval to check current track
+
           this.trackRefresh = setInterval(() => {
             fetch('https://api.spotify.com/v1/me/player', {
               method: 'GET',
@@ -48,8 +55,8 @@ export default class SpotifyController extends Component {
             .then(json => {
               if (json === '204' || !json.item) {
                 return
-              } else if ( this.state.currentTrack === null || json.item.id !== this.state.currentTrack.id ){
-                this.setState({ currentTrack: json.item })
+              } else if ( this.props.currentTrack === null || json.item.id !== this.props.currentTrack.id ){
+                this.props.setCurrentTrack(json.item)
               }
             })
           }, 2000)
@@ -148,6 +155,7 @@ export default class SpotifyController extends Component {
       <div>
         <DevicesModal devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} />
         <SearchModal search={this.search} searchResults={searchResults} accessToken={accessToken} playList={playList} />
+        <HelpModal />
       </div>
     )
   }

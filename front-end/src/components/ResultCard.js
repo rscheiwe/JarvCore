@@ -43,12 +43,14 @@ export default class ResultCard extends Component {
   render() {
     const { name, artists } = this.props.result
     return (
-      <li>
-        <p> {name} - {artists[0].name} </p> 
+      <div className="item">
         <button onClick={this.addToCurrentPlayList}>
-          { this.state.added ? "Added!" : "Add to current playlist" }
+          { this.state.added ? "Added!" : "Add to library" }
         </button>
-      </li>
+        <div className={ (name + artists[0].name).length > 50 ? "scroll-left" : null }>
+          <p> {name} - {artists[0].name} </p>
+        </div>
+      </div>
     )
   }
 }
