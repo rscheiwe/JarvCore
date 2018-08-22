@@ -202,7 +202,7 @@ export default class Home extends Component {
 		return (
 			<div className="homeBody">
         <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0"}}>
-          <p style={{color: 'white', marginLeft: '20px', marginTop: '5px'}}>Say "help" to see list of available voice commands</p>
+          <p style={{color: 'white', marginLeft: '20px', marginTop: '5px', float: 'left'}}>Say "help" to see list of available voice commands</p>
           <P5Wrapper sketch={Sketch2} />
         </div>
 
