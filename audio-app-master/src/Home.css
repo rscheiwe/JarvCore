@@ -5,6 +5,7 @@ padding: 0;
 margin: 0;
 background-image: radial-gradient(circle at center, #27588e 0%, #103359 25%, #223347 60%, #131a22 85% ); */
 font-size: 0;
+overflow: hidden;
 /* z-index: -1000000; */
 }
 

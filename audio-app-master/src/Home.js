@@ -32,7 +32,7 @@ export default class Home extends Component {
     super(props, context);
     // Add `this` context to the handler functions
     this.startAssistant = this.startAssistant.bind(this);
-    this.stopAssistant = this.stopAssistant.bind(this);
+    // this.stopAssistant = this.stopAssistant.bind(this);
 
     // Prepare simple state
     this.state = {
@@ -197,7 +197,7 @@ export default class Home extends Component {
   }
 
   startAssistant() {
-    let _this = this;
+    // let _this = this;
 
     console.log("Artyom succesfully started !");
 
@@ -211,7 +211,7 @@ export default class Home extends Component {
     }).then(() => {
         Jarvis.say("Hello. Open Spotify on one of your devices and select it.");
 
-        _this.setState({
+        this.setState({
             artyomActive: true
         });
     }).catch((err) => {
@@ -219,26 +219,26 @@ export default class Home extends Component {
     });
   }
 
-  stopAssistant() {
-    let _this = this;
-
-    Jarvis.fatality().then(() => {
-        console.log("Jarvis has been succesfully stopped");
-
-        _this.setState({
-            artyomActive: false,
-            finalCommand: finalCommand
-        });
-
-    }).catch((err) => {
-        console.error("Oopsy daisy, this shouldn't happen neither!", err);
-
-        _this.setState({
-            artyomActive: false
-      });
-
-    });
-  }
+  // stopAssistant() {
+  //   let _this = this;
+  //
+  //   Jarvis.fatality().then(() => {
+  //       console.log("Jarvis has been succesfully stopped");
+  //
+  //       _this.setState({
+  //           artyomActive: false,
+  //           finalCommand: finalCommand
+  //       });
+  //
+  //   }).catch((err) => {
+  //       console.error("Oopsy daisy, this shouldn't happen neither!", err);
+  //
+  //       _this.setState({
+  //           artyomActive: false
+  //     });
+  //
+  //   });
+  // }
 
 	render () {
     console.log(this.state.finalCommand)

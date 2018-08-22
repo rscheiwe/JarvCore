@@ -34,7 +34,7 @@ export default function Sketch2 (p){
       // var ang = p.map(i, 0, 200, 0, p.TWO_PI);
 
       var ang = p.map(i, 0, 800, 0, p.TWO_PI);
-      var rad = 400 * p.noise(i * 0.01, t * 0.005);
+      var rad = 350 * p.noise(i * 0.01, t * 0.005);
       var x = rad * p.cos(ang);
       var y = rad * p.sin(ang);
       p.curveVertex(x, y/.50);
