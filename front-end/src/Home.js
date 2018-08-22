@@ -198,7 +198,9 @@ export default class Home extends Component {
   }
 
 
+
 	render () {
+
 		return (
 			<div className="homeBody">
         <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0"}}>
