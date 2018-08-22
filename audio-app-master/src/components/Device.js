@@ -25,7 +25,7 @@ export default class Device extends Component {
     const { device } = this.props
 
     return (
-      <li onClick={this.selectDevice}><a>{device.name}</a></li>
+      <div className="item" onClick={this.selectDevice}><a>{device.name}</a></div>
     )
   }
 }

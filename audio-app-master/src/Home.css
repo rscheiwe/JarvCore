@@ -54,3 +54,107 @@ stroke-width: 0.5px;
 	max-width: 720px;
 	padding: 1em;
 }
+
+.item {
+  font-style: normal;
+  font-size: 0.8em;
+  padding: 2px;
+  color: white;
+  background-color: #5b2c7f;
+  overflow: scroll;
+}
+
+.item:hover {
+  font-style: italic;
+  background-color: purple;
+}
+
+.item p {
+  margin: 8px;
+  display: inline-flex;
+}
+
+.item button {
+  margin: 5px;
+  float: left;
+  display: inline-flex;
+  background-color: white;
+  color: #5b2c7f;
+}
+
+.item button:hover {
+  color: purple;
+}
+
+.scroll-left {
+  height: 35px;
+  position: relative;
+}
+
+.scroll-left p {
+  margin: -7px 0px 0px 8px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  line-height: 50px;
+  text-align: left;
+}
+
+.scroll-left:hover p {
+  /* Starting position */
+  -moz-transform:translateX(50%);
+  -webkit-transform:translateX(50%);
+  transform:translateX(50%);
+  /* Apply animation to this element */
+  -moz-animation: scroll-left 9s linear infinite;
+  -webkit-animation: scroll-left 9s linear infinite;
+  animation: scroll-left 9s linear infinite;
+}
+/* Move it (define the animation) */
+@-moz-keyframes scroll-left {
+  0% { -moz-transform: translateX(100%); }
+  100% { -moz-transform: translateX(-100%); }
+}
+
+@-webkit-keyframes scroll-left {
+  0% { -webkit-transform: translateX(100%); }
+  100% { -webkit-transform: translateX(-100%); }
+}
+
+@keyframes scroll-left {
+  0% {
+    -moz-transform: translateX(100%); /* Browser bug fix */
+    -webkit-transform: translateX(100%); /* Browser bug fix */
+    transform: translateX(100%);
+  }
+  100% {
+    -moz-transform: translateX(-100%); /* Browser bug fix */
+    -webkit-transform: translateX(-100%); /* Browser bug fix */
+    transform: translateX(-100%);
+  }
+}
+
+.search-form {
+  display: inline-flex;
+  margin: 20px;
+}
+
+.search-input-field {
+  margin-right: 20px;
+}
+
+.search-form-button {
+  margin: 5px;
+  float: left;
+  display: inline-flex;
+  background-color: white;
+  color: #5b2c7f;
+}
+
+.search-form-button:hover {
+  color: purple;
+}
+
+.modal-body {
+  background-color: #2d2e64;
+}

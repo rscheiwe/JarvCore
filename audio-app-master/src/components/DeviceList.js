@@ -12,9 +12,9 @@ class DeviceList extends Component {
 
   render() {
     return (
-      <ul>
+      <div className="container">
         {this.mappedDevices()}
-      </ul>
+      </div>
     )
   }
 }

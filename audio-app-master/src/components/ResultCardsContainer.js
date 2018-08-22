@@ -11,10 +11,8 @@ const ResultCardsContainer = (props) => {
   })
 
   return (
-    <div  className="container" >
-      <ul>
-        {mappedResults}
-      </ul>
+    <div  className="search-results-container" >
+      {mappedResults}
     </div>
   )
 }
