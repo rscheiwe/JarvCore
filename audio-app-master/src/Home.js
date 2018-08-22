@@ -32,7 +32,7 @@ export default class Home extends Component {
     super(props, context);
     // Add `this` context to the handler functions
     this.startAssistant = this.startAssistant.bind(this);
-    this.stopAssistant = this.stopAssistant.bind(this);
+    // this.stopAssistant = this.stopAssistant.bind(this);
 
     // Prepare simple state
     this.state = {
@@ -40,7 +40,7 @@ export default class Home extends Component {
       artyomActive: false,
       textareaValue: "",
       artyomIsReading: false,
-      finalCommand: "",
+      finalCommand: null,
       text: 'Richard'
     };
 
@@ -156,7 +156,27 @@ export default class Home extends Component {
         action: () => {
           document.querySelector('.devices-modal-button').click()
         }
-      }
+      },
+      {
+        indexes: ["I want *", "Not *"],
+        smart: true,
+        action: (i, wildcard) => {
+          if (i === 0) {
+            Jarvis.say("You want" + wildcard)
+            spokenword = wildcard
+          } else if (i === 1) {
+            Jarvis.say("Ok, sorry. Please tell me again")
+          }
+        }
+      },
+      {
+          indexes: ["Yes"],
+          action: () => {
+              Jarvis.say("great! Searching" + spokenword);
+              // this.setSomeVariable(spokenword)
+              this.setState({finalCommand: spokenword})
+          }
+      },
     ]
   }
 
@@ -177,7 +197,7 @@ export default class Home extends Component {
   }
 
   startAssistant() {
-    let _this = this;
+    // let _this = this;
 
     console.log("Artyom succesfully started !");
 
@@ -191,7 +211,7 @@ export default class Home extends Component {
     }).then(() => {
         Jarvis.say("Hello. Open Spotify on one of your devices and select it.");
 
-        _this.setState({
+        this.setState({
             artyomActive: true
         });
     }).catch((err) => {
@@ -199,36 +219,36 @@ export default class Home extends Component {
     });
   }
 
-  stopAssistant() {
-    let _this = this;
-
-    Jarvis.fatality().then(() => {
-        console.log("Jarvis has been succesfully stopped");
-
-        _this.setState({
-            artyomActive: false,
-            finalCommand: finalCommand
-        });
-
-    }).catch((err) => {
-        console.error("Oopsy daisy, this shouldn't happen neither!", err);
-
-        _this.setState({
-            artyomActive: false
-      });
-
-    });
-  }
+  // stopAssistant() {
+  //   let _this = this;
+  //
+  //   Jarvis.fatality().then(() => {
+  //       console.log("Jarvis has been succesfully stopped");
+  //
+  //       _this.setState({
+  //           artyomActive: false,
+  //           finalCommand: finalCommand
+  //       });
+  //
+  //   }).catch((err) => {
+  //       console.error("Oopsy daisy, this shouldn't happen neither!", err);
+  //
+  //       _this.setState({
+  //           artyomActive: false
+  //     });
+  //
+  //   });
+  // }
 
 	render () {
     console.log(this.state.finalCommand)
 		return (
 			<div className="homeBody">
+      <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0"}}>
+        <P5Wrapper sketch={Sketch2} />
+      </div>
         <SpotifyController accessToken={this.state.accessToken} setAccessToken={this.setAccessToken} />
 
-        <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0", width:"900px", height:"200px"}}>
-          <P5Wrapper sketch={Sketch2} />
-        </div>
 
         <div style={{position: "relative",zIndex: "99999999999"}}>
           <div id="talkButton" onClick={this.startAssistant}/>
@@ -243,9 +263,10 @@ export default class Home extends Component {
        { !deviceId ? <DeviceList devices={devices} accessToken={accessToken} setDeviceId={this.setDeviceId} /> : null } */}
        {/* { currentTrack ? <NowPlaying track={currentTrack}/> : null} */}
 
-        <CreateImage msg={["hello " + this.state.finalCommand]}/>
-        <MicrophoneViz />
 
+        <div className="parent">
+        {this.state.finalCommand ? <CreateImage msg={[this.state.finalCommand]}/> : <CreateImage msg={["hello"]}/>}
+        <MicrophoneViz />
           <svg preserveAspectRatio="none" id="visualizer" version="1.1" >
             <defs>
               <mask id="mask">
@@ -261,6 +282,7 @@ export default class Home extends Component {
             </defs>
             <rect x="0" y="0" width="100%" height="100%" fill="url(#gradient)" mask="url(#mask)"></rect>
           </svg>
+          </div>
 
         <h1>In <a href="https://codepen.io/zapplebee/full/gbNbZE/">Full Page view</a>, please allow the use of your microphone</h1>
 			</div>

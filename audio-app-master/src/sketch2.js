@@ -14,11 +14,16 @@ export default function Sketch2 (p){
 // }
 
   p.setup = function() {
-   p.createCanvas(900, 900);
+   p.createCanvas(p.windowWidth, p.windowHeight);
+
    p.background(0, 0);
    p.stroke(255, 1);
    p.noFill();
    t = 0;
+  }
+
+  p.windowResized = function () {
+    p.resizeCanvas(p.windowWidth, p.windowHeight)
   }
 
   p.draw = function () {
@@ -29,14 +34,14 @@ export default function Sketch2 (p){
       // var ang = p.map(i, 0, 200, 0, p.TWO_PI);
 
       var ang = p.map(i, 0, 800, 0, p.TWO_PI);
-      var rad = 300 * p.noise(i * 0.01, t * 0.005);
+      var rad = 350 * p.noise(i * 0.01, t * 0.005);
       var x = rad * p.cos(ang);
       var y = rad * p.sin(ang);
       p.curveVertex(x, y/.50);
     }
     p.endShape(p.CLOSE);
 
-    t += .5;
+    t += .25;
 
     // clear the background every 600 frames using mod (%) operator
     if (p.frameCount % 200 === 0) {
