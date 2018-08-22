@@ -15,8 +15,7 @@ class MicrophoneViz extends Component {
 
         var soundAllowed = function (stream) {
             //Audio stops listening in FF without // window.persistAudioStream = stream;
-            //https://bugzilla.mozilla.org/show_bug.cgi?id=965483
-            //https://support.mozilla.org/en-US/questions/984179
+      
             window.persistAudioStream = stream;
             var audioContent = new AudioContext();
             var audioStream = audioContent.createMediaStreamSource( stream );

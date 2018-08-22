@@ -59,6 +59,24 @@ export default class Home extends Component {
         }
       },
       {
+        indexes: ["open manual search"],
+        action: () => {
+          document.querySelector('.search-modal-button').click()
+        }
+      },
+      {
+        indexes: ["help"],
+        action: () => {
+          document.querySelector('.help-modal-button').click()
+        }
+      },
+      {
+        indexes: ["close help"],
+        action: () => {
+          document.querySelector('.help-modal-button').click()
+        }
+      },
+      {
         indexes: ["play"],
         action: () => {
           Jarvis.say("Okay. let's get this party started")
@@ -69,7 +87,7 @@ export default class Home extends Component {
         }
       },
       {
-        indexes: ["pause track"],
+        indexes: ["pause"],
         action: () => {
           Jarvis.say("Okay. letss take a break")
           fetch('https://api.spotify.com/v1/me/player/pause', {
@@ -168,8 +186,6 @@ export default class Home extends Component {
   }
 
   startAssistant = () => {
-    // let _this = this;
-
     console.log("Artyom succesfully started !");
 
     Jarvis.initialize({
@@ -194,7 +210,7 @@ export default class Home extends Component {
 	render () {
 		return (
 			<div className="homeBody">
-
+        <p style={{color: 'white', marginLeft: '20px', marginTop: '5px'}}>Say "help" to see list of available voice commands</p>
         <div style={{position: "absolute", marginLeft: "auto", marginRight: "auto", left: "0", right: "0"}}>
           <P5Wrapper sketch={Sketch2} />
         </div>
