@@ -5,6 +5,8 @@
 
 A demo may be found [here](http://richardscheiwe.com/demos).
 
+Jarvify is a speech-recognition, voice-controlled media player. It uses the Spotify API to sync with your Spotify account so that you may control your player's playback and playlist.
+
 ## Getting Started
 
 If you wish to utilize the voice-controlled, frontend capacities, then it is recommended that you move to JarvCore's frontend, which can be found [here](https://github.com/rscheiwe/JarvCore/tree/master/front-end). The frontend is set-up with a customized build of [Artyom](https://github.com/sdkcarlos/artyom.js/), the speech recognition package used in JarvCore.
@@ -21,3 +23,16 @@ To build locally, run:
 npm install
 npm start
 ```
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://github.com/rscheiwe/JarvCore/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Authors
+
+* **Richard Scheiwe** - [Personal](http://richardscheiwe.com)
+* **Mark Sauer-Utley** - [Hub](https://github.com/mrkutly)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
