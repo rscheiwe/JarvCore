@@ -15,7 +15,7 @@ require "rails/test_unit/railtie"
 require 'rspotify'
 require 'omniauth-spotify'
 
-RSpotify.authenticate("c68b10141c6248428f0be0b1f4fad320", "4a22f7e01e844229b94591cbdc0ff0a3")
+RSpotify.authenticate(ENV["CLIENT_ID"], ENV["CLIENT_SECRET"])
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
